@@ -1,7 +1,3 @@
-<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink">
-    <image
-        width="100" height="100"
-        xlink:href="data:inria-logo.png;base64,IMAGE_DATA"
-        />
+<svg width="56" height="56" xmlns="http://www.w3.org/2000/svg">
+  <image href="inria-logo.png" height="56" width="56" />
 </svg>
