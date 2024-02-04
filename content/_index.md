@@ -62,6 +62,6 @@ sections:
     id: contact
     content:
       title: Contact
-      subtitle: ''
+      subtitle:
       text: **Mail** : emma [dot] redor [at] ens-rennes [dot] fr
 ---
