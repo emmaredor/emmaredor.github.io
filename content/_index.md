@@ -63,5 +63,5 @@ sections:
     content:
       title: Contact
       subtitle: My subtitle
-      text: -> **Mail** emma [dot] redor [at] ens-rennes [dot] fr
+      text: <i class="fa-solid fa-envelope"></i> emma [dot] redor [at] ens-rennes [dot] fr
 ---
