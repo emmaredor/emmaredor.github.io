@@ -58,10 +58,4 @@ sections:
           description: Summer internship under [Claire Lemaitre's](http://people.rennes.inria.fr/Claire.Lemaitre/index.php) supervision. I worked on developping a tool for genotyping structural variants using linked-reads in Python.
     design:
       columns: '2'
-  - block: markdown
-    id: contact
-    content:
-      title: Contact
-      subtitle:
-      text: **Mail** : emma [dot] redor [at] ens-rennes [dot] fr
 ---
