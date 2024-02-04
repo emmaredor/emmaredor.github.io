@@ -48,8 +48,8 @@ sections:
           date_start: '2023-05-05'
           date_end: '2023-07-07'
           description: Summer internship under [Fanny Dégeilh's](https://team.inria.fr/empenn/team-members/fanny-degeilh/) supervision. I listed different brain atlases for infants (0-5 yo) and tested several brain segmentation tools on HCP Baby data.
-        - title: Professor of Semiconductor Physics
-          company: University X
+        - title: Research Internship
+          company: Inria (GENSCALE team)
           company_url: 'https://team.inria.fr/genscale/'
           company_logo: inria-logo
           location: Rennes, France
