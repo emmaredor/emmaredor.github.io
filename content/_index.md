@@ -62,6 +62,6 @@ sections:
     id: contact
     content:
       title: Contact
-      subtitle: My subtitle
+      subtitle: 
       text: <i class="fa-solid fa-envelope"></i> emma [dot] redor [at] ens-rennes [dot] fr
 ---
