@@ -15,18 +15,25 @@ header:
       slug: /
     #- name: Work
     #- name: Blog
+    - name: ENS Grades
+      slug: /ens-grades.html
     - name: CV
+      slug: /downloads/Resume.pdf
 
 footer:
   show_powered_by: false
   contact:
     - type: email
-      name: Email
-      value: emma.redor@ens-rennes.fr
+      name: emma [dot] redor [at] ens-rennes [dot] fr
+      value: emma [dot] redor [at] ens-rennes [dot] fr
+      cloak: false
   follow:
     - type: github
       name: GitHub
       link: http://github.com/emmaredor
+    - type: linkedin
+      name: LinkedIn
+      link: https://www.linkedin.com/in/emma-redor-52554832a
 
 # Build settings
 markdown: kramdown

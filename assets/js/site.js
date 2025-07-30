@@ -19,6 +19,50 @@ $(document).ready(function() {
 });
 
 /**
+ * Red Panda GIF Randomizer
+ */
+$(document).ready(function() {
+  const gifElement = $("#red-panda-gif");
+  
+  if (gifElement.length > 0) {
+    console.log("Red panda GIF element found!");
+    
+    // List of available GIF files
+    const availableGifs = [
+      'attack.gif',
+      'eeping.gif', 
+      'eepy.gif',
+      'falling.gif',
+      'idle.gif',
+      'idle2.gif',
+      'jump.gif'
+    ];
+    
+    // Select a random GIF
+    const randomIndex = Math.floor(Math.random() * availableGifs.length);
+    const selectedGif = availableGifs[randomIndex];
+    const gifPath = '/assets/img/red_pandas/' + selectedGif;
+    
+    console.log("Selected GIF:", selectedGif);
+    
+    // Set the src attribute to load the random GIF
+    gifElement.attr('src', gifPath);
+    
+    // Log when the GIF loads successfully
+    gifElement.on('load', function() {
+      console.log("GIF loaded successfully:", selectedGif);
+    });
+    
+    gifElement.on('error', function() {
+      console.error("Failed to load GIF:", selectedGif);
+    });
+    
+  } else {
+    console.log("Red panda GIF element NOT found!");
+  }
+});
+
+/**
  * Footer email
  */
 $(document).ready(function() {

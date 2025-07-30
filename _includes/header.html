@@ -15,9 +15,15 @@
             {% assign page_link = "/" | append: page.name | downcase %}
           {% endif %}
           {% assign page_link = page_link | absolute_url %}
-          <a class="page-link" href="{{ page_link }}">
-            {{ page.name }}
-          </a>
+          {% if page_link contains '.pdf' %}
+            <a class="page-link" href="{{ page_link }}" download>
+              {{ page.name }}
+            </a>
+          {% else %}
+            <a class="page-link" href="{{ page_link }}">
+              {{ page.name }}
+            </a>
+          {% endif %}
         {% endfor %}
       </div>
     </nav>
