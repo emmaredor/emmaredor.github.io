@@ -112,14 +112,15 @@ slug: /ens-grades.html
 
   <table>
     <tr><th>Note française (sur 20)</th><th>GPA</th><th>Lettre</th></tr>
-    <tr><td>≥ 14</td><td>4.0</td><td>A</td></tr>
-    <tr><td>13 – 13.9</td><td>3.7</td><td>B+</td></tr>
-    <tr><td>12 – 12.9</td><td>3.33</td><td>B</td></tr>
-    <tr><td>11 – 11.9</td><td>3.0</td><td>B-</td></tr>
-    <tr><td>10.5 – 10.9</td><td>2.7</td><td>C+</td></tr>
-    <tr><td>10.1 – 10.4</td><td>2.33</td><td>C</td></tr>
-    <tr><td>9 – 10.0</td><td>2.0</td><td>C-</td></tr>
-    <tr><td>7 – 8.9</td><td>1.7</td><td>D</td></tr>
+    <tr><td>≥ 16</td><td>4.33</td><td>A+</td></tr>
+    <tr><td>14 - 15.99</td><td>4.0</td><td>A</td></tr>
+    <tr><td>13 – 13.99</td><td>3.67</td><td>A-</td></tr>
+    <tr><td>12 – 12.99</td><td>3.33</td><td>B+</td></tr>
+    <tr><td>11 – 11.99</td><td>3.0</td><td>B</td></tr>
+    <tr><td>10 – 10.99</td><td>2.67</td><td>B-</td></tr>
+    <tr><td>9 – 9.99</td><td>2.33</td><td>C+</td></tr>
+    <tr><td>8 – 8.99</td><td>2.0</td><td>C</td></tr>
+    <tr><td>7 – 7.99</td><td>1.67</td><td>C-</td></tr>
     <tr><td>&lt; 7</td><td>0.0</td><td>F</td></tr>
     <tr><td>N/A</td><td>N/A</td><td>N/A</td></tr>
   </table>
