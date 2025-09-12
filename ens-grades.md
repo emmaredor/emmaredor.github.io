@@ -150,7 +150,7 @@ slug: /ens-grades.html
 </div>
 
 <div class="download-section">
-  <a href="/convertisseur/source_code.zip" class="download-button" download>📥 Télécharger le code source</a>
+  <a href="https://github.com/emmaredor/ENSGrading" class="download-button" target="_blank" rel="noopener noreferrer">� Voir le code source sur GitHub</a>
 </div>
 
 <div class="pdf-section">
