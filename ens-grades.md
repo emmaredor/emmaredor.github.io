@@ -129,6 +129,9 @@ slug: /ens-grades.html
 
   <h2>Outil</h2>
   <p>L'outil est encore en développement.</p>
+  <p>Installer les librairies : <code>pip install -r requirements.txt</code> (testé avec Python 3.13.5)</p>
+  <p>Remplir au préalable les informations de l'étudiant dans <code>config/info.yaml</code> et exécuter <code>script.sh</code></p>
+  <p>Le programme se déroule ensuite :</p>
   <ol>
     <li>Lecture d'un relevé de notes en PDF-texte (et non image) qui peut être certifié ou non (par la scolarité) : ceci est géré dans le fichier grades.py avec un paramètre dans la fonction <i>read_grades()</i>. Le programme génère dans le dossier config un fichier grades.json qui contient UEs, ECTS et notes.
       <br><i>Si une UE n'a pas été validée, au dépend du fichier certifié ou non, il peut ne pas contenir les ECTS. Il est donc laissé à l'utilisateur le soin de vérifier le fichier config/grades.json avec les bons ECTS.</i></li>
@@ -138,9 +141,6 @@ slug: /ens-grades.html
     <li>Création d'un relevé de notes équivalent en PDF dans le répertoire local : ceci est géré dans le fichier main.py à exécuter. Il est possible de spécifier les fichiers que main.py doit utiliser à l'aide des options -g, -i et -o. (voir <code>python main.py --help</code> pour plus d'information)</li>
 
   </ol>
-
-  <p>Installer les librairies : <code>pip install -r requirements.txt</code> (testé avec Python 3.13.5)</p>
-  <p>Remplir au préalable les informations de l'étudiant dans <code>config/info.yaml</code> et exécuter <code>script.sh</code></p>
 
   <h2>Accord</h2>
   <p>Afin de compléter l'outil, nous avons besoin de l'accord et de la collaboration du directeur du département informatique. Sur les points suivants :</p>
