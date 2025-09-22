@@ -1,15 +1,9 @@
 {
   "functions": {
-    "api/generate-single.py": {
-      "runtime": "python3.9"
-    },
-    "api/generate-batch.py": {
-      "runtime": "python3.9"
+    "api/*.py": {
+      "runtime": "@vercel/python@4.0.0"
     }
   },
-  "build": {
-    "env": {
-      "PYTHONPATH": "./api"
-    }
-  }
+  "buildCommand": "bundle exec jekyll build",
+  "outputDirectory": "_site"
 }
