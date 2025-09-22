@@ -16,7 +16,8 @@ from datetime import datetime
 # Add the lib directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'lib'))
 
-from data_loader import DataLoader, ExcelStudentLoader
+from data_loader import DataLoader
+from lightweight_excel import LightweightExcelLoader
 from text_formatter import TextFormatter
 from pdf_generator import TranscriptPDFGenerator
 from grades_processor import GradeValidator
@@ -27,7 +28,7 @@ class BatchTranscriptGenerator:
     
     def __init__(self):
         self.data_loader = DataLoader()
-        self.excel_loader = ExcelStudentLoader()
+        self.excel_loader = LightweightExcelLoader()
         self.text_formatter = TextFormatter()
         self.pdf_generator = TranscriptPDFGenerator()
         self.grade_validator = GradeValidator()
@@ -91,21 +92,20 @@ def handler(request):
             }
         
         # Process Excel file
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Save Excel file temporarily
-            excel_path = os.path.join(temp_dir, 'students.xlsx')
-            with open(excel_path, 'wb') as f:
-                f.write(form_data['students_excel'].encode('latin1'))  # Binary data handling
+        try:
+            # Get Excel content as bytes
+            excel_content = form_data['students_excel']
+            if isinstance(excel_content, str):
+                excel_content = excel_content.encode('latin1')
             
-            # Load students from Excel
-            try:
-                students_data = generator.excel_loader.load_students_from_excel(excel_path)
-            except Exception as e:
-                return {
-                    'statusCode': 400,
-                    'headers': {'Content-Type': 'application/json'},
-                    'body': json.dumps({'error': f'Error processing Excel file: {str(e)}'})
-                }
+            # Load students from Excel content directly
+            students_data = generator.excel_loader.load_students_from_excel_content(excel_content)
+        except Exception as e:
+            return {
+                'statusCode': 400,
+                'headers': {'Content-Type': 'application/json'},
+                'body': json.dumps({'error': f'Error processing Excel file: {str(e)}'})
+            }
             
             if not students_data:
                 return {
