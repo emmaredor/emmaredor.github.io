@@ -395,8 +395,8 @@ input[type="radio"] {
 
   <div class="tab-container">
     <div class="tab-buttons">
-      <button class="tab-button active" onclick="switchTab('upload')">Upload Files</button>
-      <button class="tab-button" onclick="switchTab('manual')">Manual Input</button>
+      <button class="tab-button active" onclick="switchTab('upload', this)">Upload Files</button>
+      <button class="tab-button" onclick="switchTab('manual', this)">Manual Input</button>
     </div>
 
     <!-- Upload Files Tab -->
@@ -611,6 +611,7 @@ input[type="radio"] {
 // API Configuration - Points to ENSGrading API deployed on Railway
 const API_BASE_URL = 'https://ensgrading-production.up.railway.app';
 
+// Global variables
 let uploadedFiles = {
   student: null,
   author: null,
@@ -619,7 +620,11 @@ let uploadedFiles = {
   'author-batch': null
 };
 
-function switchTab(tabName) {
+// =============================================================================
+// UI INTERACTION FUNCTIONS
+// =============================================================================
+
+function switchTab(tabName, clickedButton) {
   // Hide all tab contents
   const contents = document.querySelectorAll('.tab-content');
   contents.forEach(content => content.classList.remove('active'));
@@ -630,7 +635,15 @@ function switchTab(tabName) {
   
   // Show selected tab and activate button
   document.getElementById(tabName).classList.add('active');
-  event.target.classList.add('active');
+  
+  // If no button reference passed, find it by the onclick attribute
+  if (!clickedButton) {
+    clickedButton = document.querySelector(`.tab-button[onclick*="'${tabName}'"]`);
+  }
+  
+  if (clickedButton) {
+    clickedButton.classList.add('active');
+  }
 }
 
 function toggleUploadMode() {
@@ -648,11 +661,8 @@ function toggleUploadMode() {
 }
 
 function handleFileUpload(input, type) {
-  console.log('handleFileUpload called with type:', type);
-  
   const file = input.files[0];
   if (!file) {
-    console.log('No file selected');
     return;
   }
 
@@ -664,73 +674,44 @@ function handleFileUpload(input, type) {
     labelId = `${type}-file-label`;
   }
   
-  console.log('Looking for label with ID:', labelId);
   const label = document.getElementById(labelId);
   
   if (label) {
     label.textContent = `✓ ${file.name}`;
     label.classList.add('file-selected');
-    console.log('File upload successful for type:', type);
   } else {
     console.error('Label not found for ID:', labelId);
+    showStatus(`Error: Could not find label for ${type} file upload`, 'error');
+    return;
   }
   
   uploadedFiles[type] = file;
-  console.log('Updated uploadedFiles:', uploadedFiles);
-  
-  // No preview - just confirm file is uploaded
 }
+
+// =============================================================================
+// API INTERACTION FUNCTIONS
+// =============================================================================
 
 async function testAPIConnection() {
   showStatus('Testing API connection...', 'info');
   
   try {
-    // Test the main endpoint first (should return the landing page)
+    // Test the main endpoint first
     const testUrl = `${API_BASE_URL}/`;
-    console.log('Testing main endpoint:', testUrl);
-    
-    // Try to make a simple GET request first
-    const getResponse = await fetch(testUrl, {
-      method: 'GET'
-    });
-    
-    console.log('GET response status:', getResponse.status);
+    const getResponse = await fetch(testUrl, { method: 'GET' });
     
     if (getResponse.ok) {
-      // Now test an OPTIONS request to the API endpoint to verify CORS
+      // Test CORS with OPTIONS request
       const apiUrl = `${API_BASE_URL}/api/single`;
-      const optionsResponse = await fetch(apiUrl, {
-        method: 'OPTIONS'
-    });
-    
-    console.log('OPTIONS response status:', optionsResponse.status);
-    console.log('CORS headers:', {
-      'Access-Control-Allow-Origin': optionsResponse.headers.get('Access-Control-Allow-Origin'),
-      'Access-Control-Allow-Methods': optionsResponse.headers.get('Access-Control-Allow-Methods'),
-      'Access-Control-Allow-Headers': optionsResponse.headers.get('Access-Control-Allow-Headers')
-    });
-    
-    if (optionsResponse.ok) {
-      // Now test a POST request
-      const postResponse = await fetch(testUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ test: 'data' })
-      });
+      const optionsResponse = await fetch(apiUrl, { method: 'OPTIONS' });
       
-      console.log('POST response status:', postResponse.status);
-      const result = await postResponse.json();
-      console.log('POST response data:', result);
-      
-      if (postResponse.ok) {
+      if (optionsResponse.ok) {
         showStatus('✅ API connection successful! CORS is working properly.', 'success');
       } else {
-        showStatus('⚠️ OPTIONS works but POST failed. Check console for details.', 'error');
+        showStatus(`⚠️ OPTIONS request failed with status ${optionsResponse.status}. Check console for details.`, 'error');
       }
     } else {
-      showStatus(`⚠️ OPTIONS request failed with status ${optionsResponse.status}. Check console for details.`, 'error');
+      showStatus(`⚠️ Main endpoint failed with status ${getResponse.status}. Check console for details.`, 'error');
     }
     
   } catch (error) {
@@ -743,6 +724,10 @@ async function testAPIConnection() {
     }
   }
 }
+
+// =============================================================================
+// FORM AND DATA HANDLING FUNCTIONS
+// =============================================================================
 
 function addGradeRow() {
   const tbody = document.getElementById('grades-tbody');
@@ -804,11 +789,15 @@ function loadExampleData() {
   // Switch to manual tab if not already there
   const manualTab = document.getElementById('manual');
   if (!manualTab.classList.contains('active')) {
-    document.querySelector('.tab-button[onclick="switchTab(\'manual\')"]').click();
+    switchTab('manual');
   }
   
   showStatus('Example data loaded successfully!', 'success');
 }
+
+// =============================================================================
+// UTILITY FUNCTIONS
+// =============================================================================
 
 function showStatus(message, type) {
   const statusDiv = document.getElementById('status-message');
@@ -833,6 +822,10 @@ function calculateGPA(grade) {
   if (grade >= 7) return { gpa: '1.7', letter: 'C-' };
   return { gpa: '0.0', letter: 'F' };
 }
+
+// =============================================================================
+// TRANSCRIPT GENERATION FUNCTIONS
+// =============================================================================
 
 function generateTranscript() {
   try {
@@ -874,20 +867,14 @@ async function handleSingleUploadGeneration() {
     formData.append('author_info', uploadedFiles.author);
     formData.append('grades', uploadedFiles.grades);
 
-    console.log('Attempting to call API:', `${API_BASE_URL}/api/single`);
-
-    // Call Vercel API
+    // Call API
     const response = await fetch(`${API_BASE_URL}/api/single`, {
       method: 'POST',
       body: formData
     });
 
-    console.log('Response status:', response.status);
-    console.log('Response headers:', response.headers);
-
     if (!response.ok) {
       const errorText = await response.text();
-      console.log('Error response:', errorText);
       throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
 
@@ -1037,6 +1024,10 @@ async function handleManualInputGeneration() {
     showStatus('Error generating transcript: ' + error.message, 'error');
   }
 }
+
+// =============================================================================
+// FILE DOWNLOAD FUNCTIONS
+// =============================================================================
 
 function downloadPDFFromBase64(base64Data, filename) {
   try {
