@@ -170,19 +170,6 @@ slug: /demo.html
   cursor: not-allowed;
 }
 
-.preview-area {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 15px;
-  margin-top: 10px;
-  max-height: 200px;
-  overflow-y: auto;
-  font-family: monospace;
-  font-size: 12px;
-  color: #111;
-}
-
 .tab-container {
   margin-bottom: 20px;
 }
@@ -438,7 +425,6 @@ input[type="radio"] {
                 Click to upload student info file (YAML)
               </label>
             </div>
-            <div id="student-preview" class="preview-area" style="display: none;"></div>
           </div>
 
           <div class="input-group">
@@ -449,7 +435,6 @@ input[type="radio"] {
                 Click to upload author info file (YAML)
               </label>
             </div>
-            <div id="author-preview" class="preview-area" style="display: none;"></div>
           </div>
 
           <div class="input-group">
@@ -460,7 +445,6 @@ input[type="radio"] {
                 Click to upload grades file (JSON)
               </label>
             </div>
-            <div id="grades-preview" class="preview-area" style="display: none;"></div>
           </div>
         </div>
 
@@ -474,7 +458,6 @@ input[type="radio"] {
                 Click to upload Excel file with student data
               </label>
             </div>
-            <div id="excel-preview" class="preview-area" style="display: none;"></div>
           </div>
 
           <div class="input-group">
@@ -485,7 +468,6 @@ input[type="radio"] {
                 Click to upload author info file (YAML)
               </label>
             </div>
-            <div id="author-batch-preview" class="preview-area" style="display: none;"></div>
           </div>
 
           <div class="info-box">
@@ -667,21 +649,13 @@ function handleFileUpload(input, type) {
   if (!file) return;
 
   const label = document.getElementById(`${type}-file-label`);
-  const preview = document.getElementById(`${type}-preview`);
   
   label.textContent = `✓ ${file.name}`;
   label.classList.add('file-selected');
   
   uploadedFiles[type] = file;
   
-  // Read and preview file content
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const content = e.target.result;
-    preview.style.display = 'block';
-    preview.textContent = content.substring(0, 500) + (content.length > 500 ? '...' : '');
-  };
-  reader.readAsText(file);
+  // No preview - just confirm file is uploaded
 }
 
 function addGradeRow() {
