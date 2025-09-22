@@ -624,7 +624,7 @@ input[type="radio"] {
 
 <script>
 // API Configuration - Points to ENSGrading API deployed on Vercel
-const API_BASE_URL = 'https://ensgrading.vercel.app';
+const API_BASE_URL = 'https://ens-grading.vercel.app/';
 
 let uploadedFiles = {
   student: null,
