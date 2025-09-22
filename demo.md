@@ -623,8 +623,8 @@ input[type="radio"] {
 </div>
 
 <script>
-// API Configuration - Change this URL to switch between local and deployed API
-const API_BASE_URL = 'https://emmaredor-github-io.vercel.app';
+// API Configuration - Points to ENSGrading API deployed on Vercel
+const API_BASE_URL = 'https://ensgrading.vercel.app';
 
 let uploadedFiles = {
   student: null,
