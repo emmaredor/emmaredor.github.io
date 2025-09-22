@@ -608,8 +608,8 @@ input[type="radio"] {
 </div>
 
 <script>
-// API Configuration - Points to ENSGrading API deployed on Vercel
-const API_BASE_URL = 'https://ens-grading.vercel.app';
+// API Configuration - Points to ENSGrading API deployed on Railway
+const API_BASE_URL = 'ensgrading-production.up.railway.app';
 
 let uploadedFiles = {
   student: null,
@@ -665,13 +665,22 @@ async function testAPIConnection() {
   showStatus('Testing API connection...', 'info');
   
   try {
-    // Test the CORS test endpoint first
-    const testUrl = `${API_BASE_URL}/api/test_cors`;
-    console.log('Testing CORS endpoint:', testUrl);
+    // Test the main endpoint first (should return the landing page)
+    const testUrl = `${API_BASE_URL}/`;
+    console.log('Testing main endpoint:', testUrl);
     
-    // Try to make a simple OPTIONS request first to test CORS
-    const optionsResponse = await fetch(testUrl, {
-      method: 'OPTIONS'
+    // Try to make a simple GET request first
+    const getResponse = await fetch(testUrl, {
+      method: 'GET'
+    });
+    
+    console.log('GET response status:', getResponse.status);
+    
+    if (getResponse.ok) {
+      // Now test an OPTIONS request to the API endpoint to verify CORS
+      const apiUrl = `${API_BASE_URL}/api/single`;
+      const optionsResponse = await fetch(apiUrl, {
+        method: 'OPTIONS'
     });
     
     console.log('OPTIONS response status:', optionsResponse.status);
