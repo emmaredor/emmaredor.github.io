@@ -665,25 +665,43 @@ async function testAPIConnection() {
   showStatus('Testing API connection...', 'info');
   
   try {
-    const testUrl = `${API_BASE_URL}/api/single`;
-    console.log('Testing API endpoint:', testUrl);
+    // Test the CORS test endpoint first
+    const testUrl = `${API_BASE_URL}/api/test_cors`;
+    console.log('Testing CORS endpoint:', testUrl);
     
     // Try to make a simple OPTIONS request first to test CORS
-    const response = await fetch(testUrl, {
+    const optionsResponse = await fetch(testUrl, {
       method: 'OPTIONS'
     });
     
-    console.log('OPTIONS response status:', response.status);
+    console.log('OPTIONS response status:', optionsResponse.status);
     console.log('CORS headers:', {
-      'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
-      'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
-      'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+      'Access-Control-Allow-Origin': optionsResponse.headers.get('Access-Control-Allow-Origin'),
+      'Access-Control-Allow-Methods': optionsResponse.headers.get('Access-Control-Allow-Methods'),
+      'Access-Control-Allow-Headers': optionsResponse.headers.get('Access-Control-Allow-Headers')
     });
     
-    if (response.ok) {
-      showStatus('✅ API connection successful! The server is reachable and CORS is configured.', 'success');
+    if (optionsResponse.ok) {
+      // Now test a POST request
+      const postResponse = await fetch(testUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ test: 'data' })
+      });
+      
+      console.log('POST response status:', postResponse.status);
+      const result = await postResponse.json();
+      console.log('POST response data:', result);
+      
+      if (postResponse.ok) {
+        showStatus('✅ API connection successful! CORS is working properly.', 'success');
+      } else {
+        showStatus('⚠️ OPTIONS works but POST failed. Check console for details.', 'error');
+      }
     } else {
-      showStatus(`⚠️ API responded with status ${response.status}. Check console for details.`, 'error');
+      showStatus(`⚠️ OPTIONS request failed with status ${optionsResponse.status}. Check console for details.`, 'error');
     }
     
   } catch (error) {
