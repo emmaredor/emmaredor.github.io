@@ -609,7 +609,7 @@ input[type="radio"] {
 
 <script>
 // API Configuration - Points to ENSGrading API deployed on Railway
-const API_BASE_URL = 'ensgrading-production.up.railway.app';
+const API_BASE_URL = 'https://ensgrading-production.up.railway.app';
 
 let uploadedFiles = {
   student: null,
@@ -648,15 +648,35 @@ function toggleUploadMode() {
 }
 
 function handleFileUpload(input, type) {
-  const file = input.files[0];
-  if (!file) return;
-
-  const label = document.getElementById(`${type}-file-label`);
+  console.log('handleFileUpload called with type:', type);
   
-  label.textContent = `✓ ${file.name}`;
-  label.classList.add('file-selected');
+  const file = input.files[0];
+  if (!file) {
+    console.log('No file selected');
+    return;
+  }
+
+  // Handle inconsistent label naming
+  let labelId;
+  if (type === 'author-batch') {
+    labelId = 'author-file-batch-label';
+  } else {
+    labelId = `${type}-file-label`;
+  }
+  
+  console.log('Looking for label with ID:', labelId);
+  const label = document.getElementById(labelId);
+  
+  if (label) {
+    label.textContent = `✓ ${file.name}`;
+    label.classList.add('file-selected');
+    console.log('File upload successful for type:', type);
+  } else {
+    console.error('Label not found for ID:', labelId);
+  }
   
   uploadedFiles[type] = file;
+  console.log('Updated uploadedFiles:', uploadedFiles);
   
   // No preview - just confirm file is uploaded
 }
