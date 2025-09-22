@@ -623,6 +623,9 @@ input[type="radio"] {
 </div>
 
 <script>
+// API Configuration - Change this URL to switch between local and deployed API
+const API_BASE_URL = 'https://emmaredor-github-io.vercel.app';
+
 let uploadedFiles = {
   student: null,
   author: null,
@@ -812,7 +815,7 @@ async function handleSingleUploadGeneration() {
     formData.append('grades', uploadedFiles.grades);
 
     // Call Vercel API
-    const response = await fetch('/api/generate-single', {
+    const response = await fetch(`${API_BASE_URL}/api/generate-single`, {
       method: 'POST',
       body: formData
     });
@@ -849,7 +852,7 @@ async function handleBatchUploadGeneration() {
     formData.append('author_info', uploadedFiles['author-batch']);
 
     // Call Vercel API
-    const response = await fetch('/api/generate-batch', {
+    const response = await fetch(`${API_BASE_URL}/api/generate-batch`, {
       method: 'POST',
       body: formData
     });
@@ -942,7 +945,7 @@ async function handleManualInputGeneration() {
     formData.append('grades', new Blob([gradesJson], { type: 'application/json' }));
 
     // Call Vercel API
-    const response = await fetch('/api/generate-single', {
+    const response = await fetch(`${API_BASE_URL}/api/generate-single`, {
       method: 'POST',
       body: formData
     });
