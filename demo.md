@@ -381,9 +381,12 @@ input[type="radio"] {
       <li><strong>Upload Files:</strong> Use your own files (single student or batch mode with Excel)</li>
       <li><strong>Manual Input:</strong> Fill forms directly in the browser</li>
     </ul>
-    <p><strong>Note:</strong> This is a demo version. The actual PDF generation will be implemented with Vercel integration.</p>
+    <p><strong>Note:</strong> This connects to a Vercel-deployed API for PDF generation.</p>
     
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin: 20px 0;">
+      <button type="button" class="example-button" onclick="testAPIConnection()" style="margin-right: 10px; background: #28a745;">
+        🔗 Test API Connection
+      </button>
       <a href="/downloads/example_files.zip" download class="example-button" style="margin-left: 0; font-size: 16px; padding: 15px 30px;">
         📁 Download All Example Files (ZIP)
       </a>
@@ -606,7 +609,7 @@ input[type="radio"] {
 
 <script>
 // API Configuration - Points to ENSGrading API deployed on Vercel
-const API_BASE_URL = 'https://ens-grading.vercel.app/';
+const API_BASE_URL = 'https://ens-grading.vercel.app';
 
 let uploadedFiles = {
   student: null,
@@ -656,6 +659,42 @@ function handleFileUpload(input, type) {
   uploadedFiles[type] = file;
   
   // No preview - just confirm file is uploaded
+}
+
+async function testAPIConnection() {
+  showStatus('Testing API connection...', 'info');
+  
+  try {
+    const testUrl = `${API_BASE_URL}/api/generate-single-proper`;
+    console.log('Testing API endpoint:', testUrl);
+    
+    // Try to make a simple OPTIONS request first to test CORS
+    const response = await fetch(testUrl, {
+      method: 'OPTIONS'
+    });
+    
+    console.log('OPTIONS response status:', response.status);
+    console.log('CORS headers:', {
+      'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+      'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+      'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+    });
+    
+    if (response.ok) {
+      showStatus('✅ API connection successful! The server is reachable and CORS is configured.', 'success');
+    } else {
+      showStatus(`⚠️ API responded with status ${response.status}. Check console for details.`, 'error');
+    }
+    
+  } catch (error) {
+    console.error('API connection test failed:', error);
+    
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      showStatus('❌ API connection failed: Cannot reach the server. The API may not be deployed yet.', 'error');
+    } else {
+      showStatus('❌ API connection failed: ' + error.message, 'error');
+    }
+  }
 }
 
 function addGradeRow() {
@@ -788,17 +827,24 @@ async function handleSingleUploadGeneration() {
     formData.append('author_info', uploadedFiles.author);
     formData.append('grades', uploadedFiles.grades);
 
+    console.log('Attempting to call API:', `${API_BASE_URL}/api/generate-single-proper`);
+
     // Call Vercel API
     const response = await fetch(`${API_BASE_URL}/api/generate-single-proper`, {
       method: 'POST',
       body: formData
     });
 
-    const result = await response.json();
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
 
     if (!response.ok) {
-      throw new Error(result.error || 'Failed to generate transcript');
+      const errorText = await response.text();
+      console.log('Error response:', errorText);
+      throw new Error(`HTTP ${response.status}: ${errorText}`);
     }
+
+    const result = await response.json();
 
     // Handle successful response
     downloadPDFFromBase64(result.pdf_data, result.filename);
@@ -806,7 +852,12 @@ async function handleSingleUploadGeneration() {
     showStatus(`Transcript generated successfully for ${result.student_name}!`, 'success');
 
   } catch (error) {
-    showStatus('Error generating transcript: ' + error.message, 'error');
+    console.error('Full error:', error);
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      showStatus('Network error: Unable to connect to the API. Please check if the API is deployed and accessible.', 'error');
+    } else {
+      showStatus('Error generating transcript: ' + error.message, 'error');
+    }
   }
 }
 
