@@ -815,7 +815,7 @@ async function handleSingleUploadGeneration() {
     formData.append('grades', uploadedFiles.grades);
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-single`, {
+    const response = await fetch(`${API_BASE_URL}/api/generate-single-proper`, {
       method: 'POST',
       body: formData
     });
@@ -852,7 +852,7 @@ async function handleBatchUploadGeneration() {
     formData.append('author_info', uploadedFiles['author-batch']);
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-batch`, {
+    const response = await fetch(`${API_BASE_URL}/api/generate-batch-proper`, {
       method: 'POST',
       body: formData
     });
@@ -945,7 +945,7 @@ async function handleManualInputGeneration() {
     formData.append('grades', new Blob([gradesJson], { type: 'application/json' }));
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-single`, {
+    const response = await fetch(`${API_BASE_URL}/api/generate-single-proper`, {
       method: 'POST',
       body: formData
     });
