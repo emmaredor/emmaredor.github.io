@@ -4,7 +4,12 @@ source "https://rubygems.org"
 # file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
 #
 #     bundle exec jekyll serve
-gem "jekyll", "~> 4.0.0"
+gem "jekyll", "~> 4.3.0"
+
+# Required for Ruby 3.3 compatibility
+gem "csv"
+gem "base64"
+gem "bigdecimal"
 
 # Plugins
 group :jekyll_plugins do
