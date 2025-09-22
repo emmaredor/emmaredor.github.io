@@ -665,7 +665,7 @@ async function testAPIConnection() {
   showStatus('Testing API connection...', 'info');
   
   try {
-    const testUrl = `${API_BASE_URL}/api/generate-single-proper`;
+    const testUrl = `${API_BASE_URL}/api/single`;
     console.log('Testing API endpoint:', testUrl);
     
     // Try to make a simple OPTIONS request first to test CORS
@@ -827,10 +827,10 @@ async function handleSingleUploadGeneration() {
     formData.append('author_info', uploadedFiles.author);
     formData.append('grades', uploadedFiles.grades);
 
-    console.log('Attempting to call API:', `${API_BASE_URL}/api/generate-single-proper`);
+    console.log('Attempting to call API:', `${API_BASE_URL}/api/single`);
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-single-proper`, {
+    const response = await fetch(`${API_BASE_URL}/api/single`, {
       method: 'POST',
       body: formData
     });
@@ -877,7 +877,7 @@ async function handleBatchUploadGeneration() {
     formData.append('author_info', uploadedFiles['author-batch']);
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-batch-proper`, {
+    const response = await fetch(`${API_BASE_URL}/api/batch`, {
       method: 'POST',
       body: formData
     });
@@ -970,7 +970,7 @@ async function handleManualInputGeneration() {
     formData.append('grades', new Blob([gradesJson], { type: 'application/json' }));
 
     // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/generate-single-proper`, {
+    const response = await fetch(`${API_BASE_URL}/api/single`, {
       method: 'POST',
       body: formData
     });
