@@ -1,0 +1,15 @@
+{
+  "functions": {
+    "api/generate-single.py": {
+      "runtime": "python3.9"
+    },
+    "api/generate-batch.py": {
+      "runtime": "python3.9"
+    }
+  },
+  "build": {
+    "env": {
+      "PYTHONPATH": "./api"
+    }
+  }
+}

@@ -17,6 +17,8 @@ header:
     #- name: Blog
     - name: ENS Grades
       slug: /ens-grades.html
+    - name: Demo
+      slug: /demo.html
     - name: CV
       slug: /downloads/Resume.pdf
 
