@@ -752,10 +752,6 @@ function showStatus(message, type) {
   statusDiv.textContent = message;
   statusDiv.className = `status-message status-${type}`;
   statusDiv.style.display = 'block';
-  
-  setTimeout(() => {
-    statusDiv.style.display = 'none';
-  }, 5000);
 }
 
 
