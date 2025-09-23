@@ -879,6 +879,15 @@ async function handleSingleUploadGeneration() {
     }
 
     const result = await response.json();
+    
+    console.log('API Response received:', {
+      success: result.success,
+      hasFilename: !!result.filename,
+      hasPdfData: !!result.pdf_data,
+      pdfDataLength: result.pdf_data ? result.pdf_data.length : 0,
+      filename: result.filename,
+      studentName: result.student_name
+    });
 
     // Handle successful response
     downloadPDFFromBase64(result.pdf_data, result.filename);
@@ -1031,13 +1040,26 @@ async function handleManualInputGeneration() {
 
 function downloadPDFFromBase64(base64Data, filename) {
   try {
+    console.log('downloadPDFFromBase64 called with:', {
+      filename: filename,
+      dataLength: base64Data ? base64Data.length : 'null',
+      dataStart: base64Data ? base64Data.substring(0, 50) : 'null'
+    });
+    
+    if (!base64Data) {
+      throw new Error('No PDF data provided');
+    }
+    
     // Convert base64 to blob
     const binaryString = atob(base64Data);
+    console.log('Base64 decoded, binary string length:', binaryString.length);
+    
     const bytes = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
     const blob = new Blob([bytes], { type: 'application/pdf' });
+    console.log('Blob created, size:', blob.size, 'type:', blob.type);
 
     // Create download link
     const url = URL.createObjectURL(blob);
@@ -1046,14 +1068,26 @@ function downloadPDFFromBase64(base64Data, filename) {
     link.download = filename;
     link.style.display = 'none';
     
+    console.log('Download link created:', {
+      href: url,
+      download: filename,
+      blobSize: blob.size
+    });
+    
     // Trigger download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
+    console.log('Download triggered successfully');
+    
     // Clean up
     URL.revokeObjectURL(url);
+    
+    showStatus(`PDF download initiated: ${filename} (${Math.round(blob.size/1024)}KB)`, 'success');
+    
   } catch (error) {
+    console.error('Download error:', error);
     showStatus('Error downloading PDF: ' + error.message, 'error');
   }
 }
