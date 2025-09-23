@@ -398,7 +398,7 @@ input[type="radio"] {
     <!-- Upload Files Tab -->
     <div id="upload" class="tab-content active">
       <div class="demo-section">
-        <h3>Téléchargez vos fichiers</h3>
+        <h3>Ajoutez vos fichiers</h3>
         
         <div class="input-group">
           <label>Sélectionnez le mode de traitement</label>
@@ -421,7 +421,7 @@ input[type="radio"] {
             <div class="file-input-wrapper">
               <input type="file" id="student-file" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'student')">
               <label for="student-file" class="file-input-button" id="student-file-label">
-                Cliquez pour télécharger le fichier d'informations de l'étudiant (YAML)
+                Informations de l'étudiant (YAML)
               </label>
             </div>
           </div>
@@ -431,7 +431,7 @@ input[type="radio"] {
             <div class="file-input-wrapper">
               <input type="file" id="author-file" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'author')">
               <label for="author-file" class="file-input-button" id="author-file-label">
-                Cliquez pour télécharger le fichier d'informations de l'auteur (YAML)
+                Informations de l'auteur (YAML)
               </label>
             </div>
           </div>
@@ -441,7 +441,7 @@ input[type="radio"] {
             <div class="file-input-wrapper">
               <input type="file" id="grades-file" class="file-input" accept=".json" onchange="handleFileUpload(this, 'grades')">
               <label for="grades-file" class="file-input-button" id="grades-file-label">
-                Cliquez pour télécharger le fichier des notes (JSON)
+                Notes (JSON)
               </label>
             </div>
           </div>
@@ -454,7 +454,7 @@ input[type="radio"] {
             <div class="file-input-wrapper">
               <input type="file" id="excel-file" class="file-input" accept=".xlsx,.xls" onchange="handleFileUpload(this, 'excel')">
               <label for="excel-file" class="file-input-button" id="excel-file-label">
-                Cliquez pour télécharger le fichier Excel avec les données des étudiants
+                Excel avec les données des étudiants
               </label>
             </div>
           </div>
@@ -464,7 +464,7 @@ input[type="radio"] {
             <div class="file-input-wrapper">
               <input type="file" id="author-file-batch" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'author-batch')">
               <label for="author-file-batch" class="file-input-button" id="author-file-batch-label">
-                Cliquez pour télécharger le fichier d'informations de l'auteur (YAML)
+                Informations de l'auteur (YAML)
               </label>
             </div>
           </div>
@@ -496,8 +496,8 @@ input[type="radio"] {
         <div class="input-group">
           <label for="student-gender">Genre</label>
           <select id="student-gender" class="form-input">
-            <option value="Mr">M.</option>
-            <option value="Ms">Mme</option>
+            <option value="Mr">Mr</option>
+            <option value="Ms">Mrs</option>
           </select>
         </div>
         <div class="input-group">
@@ -511,14 +511,14 @@ input[type="radio"] {
         <div class="input-group">
           <label for="student-pronoun">Pronom</label>
           <select id="student-pronoun" class="form-input">
-            <option value="he">il</option>
-            <option value="she">elle</option>
-            <option value="they">ils/elles</option>
+            <option value="he">he</option>
+            <option value="she">she</option>
+            <option value="they">they</option>
           </select>
         </div>
         <div class="input-group">
           <label for="student-dob">Date de naissance</label>
-          <input type="text" id="student-dob" class="form-input" placeholder="26 août 2000">
+          <input type="text" id="student-dob" class="form-input" placeholder="26th of August 2000">
         </div>
         <div class="input-group">
           <label for="student-pob">Lieu de naissance</label>
@@ -531,8 +531,8 @@ input[type="radio"] {
         <div class="input-group">
           <label for="author-gender">Genre</label>
           <select id="author-gender" class="form-input">
-            <option value="Mr">M.</option>
-            <option value="Ms">Mme</option>
+            <option value="Mr">Mr</option>
+            <option value="Ms">Mrs</option>
           </select>
         </div>
         <div class="input-group">
@@ -545,11 +545,11 @@ input[type="radio"] {
         </div>
         <div class="input-group">
           <label for="author-field">Domaine</label>
-          <input type="text" id="author-field" class="form-input" placeholder="Informatique">
+          <input type="text" id="author-field" class="form-input" placeholder="Computer Science">
         </div>
         <div class="input-group">
           <label for="author-title">Titre</label>
-          <input type="text" id="author-title" class="form-input" placeholder="Directeur du département d'enseignement d'Informatique">
+          <input type="text" id="author-title" class="form-input" placeholder="Director of the Computer Sciences teaching department">
         </div>
         <div class="input-group">
           <label for="author-schoolyear">Année scolaire</label>
@@ -557,7 +557,7 @@ input[type="radio"] {
         </div>
         <div class="input-group">
           <label for="author-yearname">Nom de l'année</label>
-          <input type="text" id="author-yearname" class="form-input" placeholder="Première année de Master en Informatique">
+          <input type="text" id="author-yearname" class="form-input" placeholder="First year of Master's degree in Computer Science">
         </div>
       </div>
 
@@ -786,7 +786,7 @@ function generateTranscript() {
 async function handleSingleUploadGeneration() {
   // Check if files are uploaded for single mode
   if (!uploadedFiles.student || !uploadedFiles.author || !uploadedFiles.grades) {
-    showStatus('Veuillez télécharger tous les fichiers requis (informations étudiant, informations auteur et notes).', 'error');
+    showStatus('Veuillez ajouter tous les fichiers requis (informations étudiant, informations auteur et notes).', 'error');
     return;
   }
 
