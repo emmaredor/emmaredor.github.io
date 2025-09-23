@@ -1,6 +1,6 @@
 ---
 layout: default
-title: ENS Grades Demo
+title: Démo Bulletin ENS
 slug: /demo.html
 ---
 
@@ -371,45 +371,45 @@ input[type="radio"] {
 </style>
 
 <div class="demo-content">
-  <h1>ENS Grades Generator Demo</h1>
-  <p style="text-align: center; margin-bottom: 30px;">Generate professional academic transcripts with GPA conversion for international applications</p>
+  <h1>Démo du Générateur de Relevés ENS</h1>
+  <p style="text-align: center; margin-bottom: 30px;">Génération des relevés de notes académiques avec conversion GPA pour les candidatures à l'international</p>
 
   <div class="info-box">
-    <h4>How it works</h4>
-    <p>This tool generates academic transcripts from ENS Rennes grades with automatic conversion to international GPA standards. You can:</p>
+    <h4>Comment ça marche</h4>
+    <p>Cet outil génère des relevés académiques à partir des notes de l'ENS Rennes avec conversion automatique aux standards internationaux de GPA. Vous pouvez :</p>
     <ul>
-      <li><strong>Upload Files:</strong> Use your own files (single student or batch mode with Excel)</li>
-      <li><strong>Manual Input:</strong> Fill forms directly in the browser</li>
+      <li><strong>Via des fichiers :</strong> Utilisez vos propres fichiers (mode étudiant unique (1 bulletin généré)ou mode batch avec Excel)</li>
+      <li><strong>Saisie manuelle :</strong> Remplissez le formulaire directement dans le navigateur</li>
     </ul>
     
     <div style="text-align: center; margin: 20px 0;">
       <a href="/downloads/example_files.zip" download class="example-button" style="margin-left: 0; font-size: 16px; padding: 15px 30px;">
-        📁 Download All Example Files (ZIP)
+        📁 Télécharger des fichiers d'exemple (ZIP)
       </a>
     </div>
   </div>
 
   <div class="tab-container">
     <div class="tab-buttons">
-      <button class="tab-button active" onclick="switchTab('upload', this)">Upload Files</button>
-      <button class="tab-button" onclick="switchTab('manual', this)">Manual Input</button>
+      <button class="tab-button active" onclick="switchTab('upload', this)">Utiliser ses fichiers</button>
+      <button class="tab-button" onclick="switchTab('manual', this)">Saisie manuelle</button>
     </div>
 
     <!-- Upload Files Tab -->
     <div id="upload" class="tab-content active">
       <div class="demo-section">
-        <h3>Upload Your Files</h3>
+        <h3>Téléchargez vos fichiers</h3>
         
         <div class="input-group">
-          <label>Select Processing Mode</label>
+          <label>Sélectionnez le mode de traitement</label>
           <div style="display: flex; gap: 20px; margin-bottom: 20px;">
             <label style="display: flex; align-items: center; cursor: pointer;">
               <input type="radio" name="upload-mode" value="single" checked onchange="toggleUploadMode()" style="margin-right: 8px;">
-              Single Student
+              Étudiant unique
             </label>
             <label style="display: flex; align-items: center; cursor: pointer;">
               <input type="radio" name="upload-mode" value="batch" onchange="toggleUploadMode()" style="margin-right: 8px;">
-              Batch Processing (Excel)
+              Traitement par lot (Excel)
             </label>
           </div>
         </div>
@@ -417,31 +417,31 @@ input[type="radio"] {
         <!-- Single Mode Upload -->
         <div id="single-upload" class="upload-mode-section">
           <div class="input-group">
-            <label for="student-file">Student Information (YAML file)</label>
+            <label for="student-file">Informations sur l'étudiant (fichier YAML)</label>
             <div class="file-input-wrapper">
               <input type="file" id="student-file" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'student')">
               <label for="student-file" class="file-input-button" id="student-file-label">
-                Click to upload student info file (YAML)
+                Cliquez pour télécharger le fichier d'informations de l'étudiant (YAML)
               </label>
             </div>
           </div>
 
           <div class="input-group">
-            <label for="author-file">Author Information (YAML file)</label>
+            <label for="author-file">Informations sur l'auteur (fichier YAML)</label>
             <div class="file-input-wrapper">
               <input type="file" id="author-file" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'author')">
               <label for="author-file" class="file-input-button" id="author-file-label">
-                Click to upload author info file (YAML)
+                Cliquez pour télécharger le fichier d'informations de l'auteur (YAML)
               </label>
             </div>
           </div>
 
           <div class="input-group">
-            <label for="grades-file">Grades Data (JSON file)</label>
+            <label for="grades-file">Données des notes (fichier JSON)</label>
             <div class="file-input-wrapper">
               <input type="file" id="grades-file" class="file-input" accept=".json" onchange="handleFileUpload(this, 'grades')">
               <label for="grades-file" class="file-input-button" id="grades-file-label">
-                Click to upload grades file (JSON)
+                Cliquez pour télécharger le fichier des notes (JSON)
               </label>
             </div>
           </div>
@@ -450,34 +450,34 @@ input[type="radio"] {
         <!-- Batch Mode Upload -->
         <div id="batch-upload" class="upload-mode-section" style="display: none;">
           <div class="input-group">
-            <label for="excel-file">Students Excel File (.xlsx)</label>
+            <label for="excel-file">Fichier Excel des étudiants (.xlsx)</label>
             <div class="file-input-wrapper">
               <input type="file" id="excel-file" class="file-input" accept=".xlsx,.xls" onchange="handleFileUpload(this, 'excel')">
               <label for="excel-file" class="file-input-button" id="excel-file-label">
-                Click to upload Excel file with student data
+                Cliquez pour télécharger le fichier Excel avec les données des étudiants
               </label>
             </div>
           </div>
 
           <div class="input-group">
-            <label for="author-file-batch">Author Information (YAML file)</label>
+            <label for="author-file-batch">Informations sur l'auteur (fichier YAML)</label>
             <div class="file-input-wrapper">
               <input type="file" id="author-file-batch" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'author-batch')">
               <label for="author-file-batch" class="file-input-button" id="author-file-batch-label">
-                Click to upload author info file (YAML)
+                Cliquez pour télécharger le fichier d'informations de l'auteur (YAML)
               </label>
             </div>
           </div>
 
           <div class="info-box">
-            <h4>Excel File Format Requirements</h4>
-            <p>Your Excel file should contain the following columns:</p>
+            <h4>Exigences de format pour le fichier Excel</h4>
+            <p>Votre fichier Excel doit contenir les colonnes suivantes :</p>
             <ul>
-              <li><strong>Student Info:</strong> Etud_Nom (Last Name), Etud_Prénom (First Name), Etud_Naissance (Birth Date), Etud_Ville (Birth City)</li>
-              <li><strong>Courses:</strong> Columns with patterns like "Obj1_Libellé", "Obj1_Note_Ado/20", "Obj1_Crédits"</li>
-              <li><strong>Notes:</strong> Only courses with Type="ELP" will be included in the transcript</li>
+              <li><strong>Informations sur l'étudiant :</strong> Etud_Nom, Etud_Prénom, Etud_Naissance (Date de naissance), Etud_Ville (Ville de naissance)</li>
+              <li><strong>Cours :</strong> Colonnes avec des motifs comme "Obj1_Libellé", "Obj1_Note_Ado/20", "Obj1_Crédits"</li>
+              <li><strong>Remarques :</strong> Seuls les cours avec Type="ELP" seront inclus dans le relevé</li>
             </ul>
-            <p><em>Example: "Obj1_Libellé" = "Programming 1", "Obj1_Note_Ado/20" = "16.5", "Obj1_Crédits" = "6"</em></p>
+            <p><em>Exemple : "Obj1_Libellé" = "Programmation 1", "Obj1_Note_Ado/20" = "16.5", "Obj1_Crédits" = "6"</em></p>
           </div>
         </div>
       </div>
@@ -487,108 +487,108 @@ input[type="radio"] {
     <div id="manual" class="tab-content">
       <div style="text-align: center; margin-bottom: 20px;">
         <button type="button" class="example-button" onclick="loadExampleData()" style="margin-left: 0; background: #3953a5; padding: 12px 24px;">
-          📝 Fill with Example Data
+          📝 Remplir avec des données d'exemple
         </button>
       </div>
 
       <div class="demo-section">
-        <h3>Student Information</h3>
+        <h3>Informations sur l'étudiant</h3>
         <div class="input-group">
-          <label for="student-gender">Gender</label>
+          <label for="student-gender">Genre</label>
           <select id="student-gender" class="form-input">
-            <option value="Mr">Mr</option>
-            <option value="Ms">Ms</option>
+            <option value="Mr">M.</option>
+            <option value="Ms">Mme</option>
           </select>
         </div>
         <div class="input-group">
-          <label for="student-firstname">First Name</label>
+          <label for="student-firstname">Prénom</label>
           <input type="text" id="student-firstname" class="form-input" placeholder="Jean">
         </div>
         <div class="input-group">
-          <label for="student-name">Last Name</label>
+          <label for="student-name">Nom de famille</label>
           <input type="text" id="student-name" class="form-input" placeholder="DUPONT">
         </div>
         <div class="input-group">
-          <label for="student-pronoun">Pronoun</label>
+          <label for="student-pronoun">Pronom</label>
           <select id="student-pronoun" class="form-input">
-            <option value="he">he</option>
-            <option value="she">she</option>
-            <option value="they">they</option>
+            <option value="he">il</option>
+            <option value="she">elle</option>
+            <option value="they">ils/elles</option>
           </select>
         </div>
         <div class="input-group">
-          <label for="student-dob">Date of Birth</label>
-          <input type="text" id="student-dob" class="form-input" placeholder="26th of August 2000">
+          <label for="student-dob">Date de naissance</label>
+          <input type="text" id="student-dob" class="form-input" placeholder="26 août 2000">
         </div>
         <div class="input-group">
-          <label for="student-pob">Place of Birth</label>
+          <label for="student-pob">Lieu de naissance</label>
           <input type="text" id="student-pob" class="form-input" placeholder="Rennes (FRANCE)">
         </div>
       </div>
 
       <div class="demo-section">
-        <h3>Author Information</h3>
+        <h3>Informations sur l'auteur</h3>
         <div class="input-group">
-          <label for="author-gender">Gender</label>
+          <label for="author-gender">Genre</label>
           <select id="author-gender" class="form-input">
-            <option value="Mr">Mr</option>
-            <option value="Ms">Ms</option>
+            <option value="Mr">M.</option>
+            <option value="Ms">Mme</option>
           </select>
         </div>
         <div class="input-group">
-          <label for="author-firstname">First Name</label>
+          <label for="author-firstname">Prénom</label>
           <input type="text" id="author-firstname" class="form-input" placeholder="Martin">
         </div>
         <div class="input-group">
-          <label for="author-name">Last Name</label>
+          <label for="author-name">Nom de famille</label>
           <input type="text" id="author-name" class="form-input" placeholder="QUINSON">
         </div>
         <div class="input-group">
-          <label for="author-field">Field</label>
-          <input type="text" id="author-field" class="form-input" placeholder="Computer Science">
+          <label for="author-field">Domaine</label>
+          <input type="text" id="author-field" class="form-input" placeholder="Informatique">
         </div>
         <div class="input-group">
-          <label for="author-title">Title</label>
-          <input type="text" id="author-title" class="form-input" placeholder="Director of the Computer Sciences teaching department">
+          <label for="author-title">Titre</label>
+          <input type="text" id="author-title" class="form-input" placeholder="Directeur du département d'enseignement d'Informatique">
         </div>
         <div class="input-group">
-          <label for="author-schoolyear">School Year</label>
+          <label for="author-schoolyear">Année scolaire</label>
           <input type="text" id="author-schoolyear" class="form-input" placeholder="2023-2024">
         </div>
         <div class="input-group">
-          <label for="author-yearname">Year Name</label>
-          <input type="text" id="author-yearname" class="form-input" placeholder="First year of Master's degree in Computer Science">
+          <label for="author-yearname">Nom de l'année</label>
+          <input type="text" id="author-yearname" class="form-input" placeholder="Première année de Master en Informatique">
         </div>
       </div>
 
       <div class="demo-section">
-        <h3>Grades</h3>
+        <h3>Notes</h3>
         <table class="grades-table" id="grades-table">
           <thead>
             <tr>
-              <th>Course Name</th>
-              <th>Grade (/20)</th>
-              <th>ECTS Credits</th>
+              <th>Nom du cours</th>
+              <th>Note (/20)</th>
+              <th>Crédits ECTS</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="grades-tbody">
             <tr>
-              <td><input type="text" class="form-input" placeholder="Programming 1" value="Programming 1"></td>
+              <td><input type="text" class="form-input" placeholder="Programmation 1" value="Programmation 1"></td>
               <td><input type="number" class="form-input" step="0.1" min="0" max="20" placeholder="16.5" value="16.5"></td>
               <td><input type="number" class="form-input" step="1" min="0" placeholder="6" value="6"></td>
-              <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Remove</button></td>
+              <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="add-grade-button" onclick="addGradeRow()">Add Grade</button>
+        <button type="button" class="add-grade-button" onclick="addGradeRow()">Ajouter une note</button>
       </div>
     </div>
 
   <div class="status-message" id="status-message"></div>
 
   <button type="button" class="generate-button" onclick="generateTranscript()" id="generate-btn">
-    Generate Transcript
+    Générer le relevé de notes
   </button>
 </div>
 
@@ -681,10 +681,10 @@ function addGradeRow() {
   const tbody = document.getElementById('grades-tbody');
   const row = document.createElement('tr');
   row.innerHTML = `
-    <td><input type="text" class="form-input" placeholder="Course name"></td>
-    <td><input type="number" class="form-input" step="0.1" min="0" max="20" placeholder="Grade"></td>
+    <td><input type="text" class="form-input" placeholder="Nom du cours"></td>
+    <td><input type="number" class="form-input" step="0.1" min="0" max="20" placeholder="Note"></td>
     <td><input type="number" class="form-input" step="1" min="0" placeholder="ECTS"></td>
-    <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Remove</button></td>
+    <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
   `;
   tbody.appendChild(row);
 }
@@ -715,22 +715,22 @@ function loadExampleData() {
   const tbody = document.getElementById('grades-tbody');
   tbody.innerHTML = `
     <tr>
-      <td><input type="text" class="form-input" value="Programming 1"></td>
+      <td><input type="text" class="form-input" value="Programmation 1"></td>
       <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="16.5"></td>
       <td><input type="number" class="form-input" step="1" min="0" value="6"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Remove</button></td>
+      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
     </tr>
     <tr>
-      <td><input type="text" class="form-input" value="Algorithms"></td>
+      <td><input type="text" class="form-input" value="Algorithmes"></td>
       <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="14.2"></td>
       <td><input type="number" class="form-input" step="1" min="0" value="6"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Remove</button></td>
+      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
     </tr>
     <tr>
-      <td><input type="text" class="form-input" value="Mathematics"></td>
+      <td><input type="text" class="form-input" value="Mathématiques"></td>
       <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="12.8"></td>
       <td><input type="number" class="form-input" step="1" min="0" value="3"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Remove</button></td>
+      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
     </tr>
   `;
   
@@ -740,7 +740,7 @@ function loadExampleData() {
     switchTab('manual');
   }
   
-  showStatus('Example data loaded successfully!', 'success');
+  showStatus('Données d\'exemple chargées avec succès !', 'success');
 }
 
 // =============================================================================
@@ -786,11 +786,11 @@ function generateTranscript() {
 async function handleSingleUploadGeneration() {
   // Check if files are uploaded for single mode
   if (!uploadedFiles.student || !uploadedFiles.author || !uploadedFiles.grades) {
-    showStatus('Please upload all required files (student info, author info, and grades).', 'error');
+    showStatus('Veuillez télécharger tous les fichiers requis (informations étudiant, informations auteur et notes).', 'error');
     return;
   }
 
-  showStatus('Generating transcript...', 'info');
+  showStatus('Génération du relevé en cours...', 'info');
   
   try {
     // Create FormData object
