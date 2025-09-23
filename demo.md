@@ -381,12 +381,8 @@ input[type="radio"] {
       <li><strong>Upload Files:</strong> Use your own files (single student or batch mode with Excel)</li>
       <li><strong>Manual Input:</strong> Fill forms directly in the browser</li>
     </ul>
-    <p><strong>Note:</strong> This connects to a Vercel-deployed API for PDF generation.</p>
     
     <div style="text-align: center; margin: 20px 0;">
-      <button type="button" class="example-button" onclick="testAPIConnection()" style="margin-right: 10px; background: #28a745;">
-        🔗 Test API Connection
-      </button>
       <a href="/downloads/example_files.zip" download class="example-button" style="margin-left: 0; font-size: 16px; padding: 15px 30px;">
         📁 Download All Example Files (ZIP)
       </a>
@@ -592,19 +588,8 @@ input[type="radio"] {
   <div class="status-message" id="status-message"></div>
 
   <button type="button" class="generate-button" onclick="generateTranscript()" id="generate-btn">
-    Generate Transcript (Demo)
+    Generate Transcript
   </button>
-
-  <div id="result-section" style="display: none; margin-top: 30px;">
-    <div class="demo-section">
-      <h3>Generated Transcript Preview</h3>
-      <div class="info-box">
-        <h4>Transcript Generated Successfully!</h4>
-        <p>In the full version with Vercel integration, this would generate and download a PDF file.</p>
-        <div id="transcript-summary"></div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -680,7 +665,6 @@ function handleFileUpload(input, type) {
     label.textContent = `✓ ${file.name}`;
     label.classList.add('file-selected');
   } else {
-    console.error('Label not found for ID:', labelId);
     showStatus(`Error: Could not find label for ${type} file upload`, 'error');
     return;
   }
@@ -688,42 +672,6 @@ function handleFileUpload(input, type) {
   uploadedFiles[type] = file;
 }
 
-// =============================================================================
-// API INTERACTION FUNCTIONS
-// =============================================================================
-
-async function testAPIConnection() {
-  showStatus('Testing API connection...', 'info');
-  
-  try {
-    // Test the main endpoint first
-    const testUrl = `${API_BASE_URL}/`;
-    const getResponse = await fetch(testUrl, { method: 'GET' });
-    
-    if (getResponse.ok) {
-      // Test CORS with OPTIONS request
-      const apiUrl = `${API_BASE_URL}/api/single`;
-      const optionsResponse = await fetch(apiUrl, { method: 'OPTIONS' });
-      
-      if (optionsResponse.ok) {
-        showStatus('✅ API connection successful! CORS is working properly.', 'success');
-      } else {
-        showStatus(`⚠️ OPTIONS request failed with status ${optionsResponse.status}. Check console for details.`, 'error');
-      }
-    } else {
-      showStatus(`⚠️ Main endpoint failed with status ${getResponse.status}. Check console for details.`, 'error');
-    }
-    
-  } catch (error) {
-    console.error('API connection test failed:', error);
-    
-    if (error.name === 'TypeError' && error.message.includes('fetch')) {
-      showStatus('❌ API connection failed: Cannot reach the server. The API may not be deployed yet.', 'error');
-    } else {
-      showStatus('❌ API connection failed: ' + error.message, 'error');
-    }
-  }
-}
 
 // =============================================================================
 // FORM AND DATA HANDLING FUNCTIONS
@@ -810,18 +758,6 @@ function showStatus(message, type) {
   }, 5000);
 }
 
-function calculateGPA(grade) {
-  if (grade >= 16) return { gpa: '4.0', letter: 'A+' };
-  if (grade >= 14) return { gpa: '4.0', letter: 'A' };
-  if (grade >= 13) return { gpa: '3.7', letter: 'A-' };
-  if (grade >= 12) return { gpa: '3.33', letter: 'B+' };
-  if (grade >= 11) return { gpa: '3.0', letter: 'B' };
-  if (grade >= 10) return { gpa: '2.7', letter: 'B-' };
-  if (grade >= 9) return { gpa: '2.33', letter: 'C+' };
-  if (grade >= 8) return { gpa: '2.0', letter: 'C' };
-  if (grade >= 7) return { gpa: '1.7', letter: 'C-' };
-  return { gpa: '0.0', letter: 'F' };
-}
 
 // =============================================================================
 // TRANSCRIPT GENERATION FUNCTIONS
@@ -879,23 +815,12 @@ async function handleSingleUploadGeneration() {
     }
 
     const result = await response.json();
-    
-    console.log('API Response received:', {
-      success: result.success,
-      hasFilename: !!result.filename,
-      hasPdfData: !!result.pdf_data,
-      pdfDataLength: result.pdf_data ? result.pdf_data.length : 0,
-      filename: result.filename,
-      studentName: result.student_name
-    });
 
     // Handle successful response
     downloadPDFFromBase64(result.pdf_data, result.filename);
-    showTranscriptResult('single', result);
     showStatus(`Transcript generated successfully for ${result.student_name}!`, 'success');
 
   } catch (error) {
-    console.error('Full error:', error);
     if (error.name === 'TypeError' && error.message.includes('fetch')) {
       showStatus('Network error: Unable to connect to the API. Please check if the API is deployed and accessible.', 'error');
     } else {
@@ -933,7 +858,6 @@ async function handleBatchUploadGeneration() {
 
     // Handle successful response
     downloadZipFromBase64(result.zip_data, result.filename);
-    showTranscriptResult('batch', result);
     showStatus(`Batch processing completed! Generated ${result.generated_count} transcripts.`, 'success');
 
   } catch (error) {
@@ -1026,7 +950,6 @@ async function handleManualInputGeneration() {
 
     // Handle successful response
     downloadPDFFromBase64(result.pdf_data, result.filename);
-    showTranscriptResult('single', result);
     showStatus(`Transcript generated successfully for ${result.student_name}!`, 'success');
 
   } catch (error) {
@@ -1040,26 +963,17 @@ async function handleManualInputGeneration() {
 
 function downloadPDFFromBase64(base64Data, filename) {
   try {
-    console.log('downloadPDFFromBase64 called with:', {
-      filename: filename,
-      dataLength: base64Data ? base64Data.length : 'null',
-      dataStart: base64Data ? base64Data.substring(0, 50) : 'null'
-    });
-    
     if (!base64Data) {
       throw new Error('No PDF data provided');
     }
     
     // Convert base64 to blob
     const binaryString = atob(base64Data);
-    console.log('Base64 decoded, binary string length:', binaryString.length);
-    
     const bytes = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) {
       bytes[i] = binaryString.charCodeAt(i);
     }
     const blob = new Blob([bytes], { type: 'application/pdf' });
-    console.log('Blob created, size:', blob.size, 'type:', blob.type);
 
     // Create download link
     const url = URL.createObjectURL(blob);
@@ -1068,18 +982,10 @@ function downloadPDFFromBase64(base64Data, filename) {
     link.download = filename;
     link.style.display = 'none';
     
-    console.log('Download link created:', {
-      href: url,
-      download: filename,
-      blobSize: blob.size
-    });
-    
     // Trigger download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
-    console.log('Download triggered successfully');
     
     // Clean up
     URL.revokeObjectURL(url);
@@ -1087,7 +993,6 @@ function downloadPDFFromBase64(base64Data, filename) {
     showStatus(`PDF download initiated: ${filename} (${Math.round(blob.size/1024)}KB)`, 'success');
     
   } catch (error) {
-    console.error('Download error:', error);
     showStatus('Error downloading PDF: ' + error.message, 'error');
   }
 }
@@ -1119,32 +1024,5 @@ function downloadZipFromBase64(base64Data, filename) {
   } catch (error) {
     showStatus('Error downloading ZIP: ' + error.message, 'error');
   }
-}
-
-function showTranscriptResult(mode, result) {
-  const resultSection = document.getElementById('result-section');
-  const summaryDiv = document.getElementById('transcript-summary');
-  
-  if (mode === 'single') {
-    summaryDiv.innerHTML = `
-      <h5>✅ Transcript Generated Successfully!</h5>
-      <p><strong>Student:</strong> ${result.student_name}</p>
-      <p><strong>File:</strong> ${result.filename}</p>
-      <p><em>The PDF transcript has been automatically downloaded to your device.</em></p>
-    `;
-  } else if (mode === 'batch') {
-    const studentList = result.student_names.map(name => `<li>${name}</li>`).join('');
-    summaryDiv.innerHTML = `
-      <h5>✅ Batch Processing Completed!</h5>
-      <p><strong>Generated Transcripts:</strong> ${result.generated_count}</p>
-      <p><strong>ZIP File:</strong> ${result.filename}</p>
-      <p><strong>Students Processed:</strong></p>
-      <ul>${studentList}</ul>
-      <p><em>The ZIP file containing all transcripts has been automatically downloaded to your device.</em></p>
-    `;
-  }
-  
-  resultSection.style.display = 'block';
-  resultSection.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
