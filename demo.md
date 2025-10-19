@@ -378,8 +378,8 @@ input[type="radio"] {
     <h4>Comment ça marche</h4>
     <p>Cet outil génère des relevés académiques à partir des notes de l'ENS Rennes avec conversion automatique aux standards internationaux de GPA. Vous pouvez :</p>
     <ul>
-      <li><strong>Via des fichiers :</strong> Utilisez vos propres fichiers (mode étudiant unique (1 bulletin généré)ou mode batch avec Excel)</li>
-      <li><strong>Saisie manuelle :</strong> Remplissez le formulaire directement dans le navigateur</li>
+      <li><strong>Mode étudiant unique :</strong> Génère un bulletin pour un seul étudiant</li>
+      <li><strong>Mode traitement par lot :</strong> Traitement multiple d'étudiants à partir d'un fichier Excel</li>
     </ul>
     
     <div style="text-align: center; margin: 20px 0;">
@@ -390,12 +390,6 @@ input[type="radio"] {
   </div>
 
   <div class="tab-container">
-    <div class="tab-buttons">
-      <button class="tab-button active" onclick="switchTab('upload', this)">Utiliser ses fichiers</button>
-      <button class="tab-button" onclick="switchTab('manual', this)">Saisie manuelle</button>
-    </div>
-
-    <!-- Upload Files Tab -->
     <div id="upload" class="tab-content active">
       <div class="demo-section">
         <h3>Ajoutez vos fichiers</h3>
@@ -437,6 +431,16 @@ input[type="radio"] {
           </div>
 
           <div class="input-group">
+            <label for="year-file">Informations sur l'année (fichier YAML)</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="year-file" class="file-input" accept=".yaml,.yml" onchange="handleFileUpload(this, 'year')">
+              <label for="year-file" class="file-input-button" id="year-file-label">
+                Informations de l'année (YAML)
+              </label>
+            </div>
+          </div>
+          
+          <div class="input-group">
             <label for="grades-file">Données des notes (fichier JSON)</label>
             <div class="file-input-wrapper">
               <input type="file" id="grades-file" class="file-input" accept=".json" onchange="handleFileUpload(this, 'grades')">
@@ -468,6 +472,20 @@ input[type="radio"] {
               </label>
             </div>
           </div>
+          
+          <div class="input-group">
+            <label>Afficher les classements (ranking)</label>
+            <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+              <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="radio" name="display-rank" value="false" checked style="margin-right: 8px;">
+                Non
+              </label>
+              <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="radio" name="display-rank" value="true" style="margin-right: 8px;">
+                Oui
+              </label>
+            </div>
+          </div>
 
           <div class="info-box">
             <h4>Exigences de format pour le fichier Excel</h4>
@@ -480,108 +498,6 @@ input[type="radio"] {
             <p><em>Exemple : "Obj1_Libellé" = "Programmation 1", "Obj1_Note_Ado/20" = "16.5", "Obj1_Crédits" = "6"</em></p>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Manual Input Tab -->
-    <div id="manual" class="tab-content">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <button type="button" class="example-button" onclick="loadExampleData()" style="margin-left: 0; background: #3953a5; padding: 12px 24px;">
-          📝 Remplir avec des données d'exemple
-        </button>
-      </div>
-
-      <div class="demo-section">
-        <h3>Informations sur l'étudiant</h3>
-        <div class="input-group">
-          <label for="student-gender">Genre</label>
-          <select id="student-gender" class="form-input">
-            <option value="Mr">Mr</option>
-            <option value="Ms">Mrs</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label for="student-firstname">Prénom</label>
-          <input type="text" id="student-firstname" class="form-input" placeholder="Jean">
-        </div>
-        <div class="input-group">
-          <label for="student-name">Nom de famille</label>
-          <input type="text" id="student-name" class="form-input" placeholder="DUPONT">
-        </div>
-        <div class="input-group">
-          <label for="student-pronoun">Pronom</label>
-          <select id="student-pronoun" class="form-input">
-            <option value="he">he</option>
-            <option value="she">she</option>
-            <option value="they">they</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label for="student-dob">Date de naissance</label>
-          <input type="text" id="student-dob" class="form-input" placeholder="26th of August 2000">
-        </div>
-        <div class="input-group">
-          <label for="student-pob">Lieu de naissance</label>
-          <input type="text" id="student-pob" class="form-input" placeholder="Rennes (FRANCE)">
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h3>Informations sur l'auteur</h3>
-        <div class="input-group">
-          <label for="author-gender">Genre</label>
-          <select id="author-gender" class="form-input">
-            <option value="Mr">Mr</option>
-            <option value="Ms">Mrs</option>
-          </select>
-        </div>
-        <div class="input-group">
-          <label for="author-firstname">Prénom</label>
-          <input type="text" id="author-firstname" class="form-input" placeholder="Martin">
-        </div>
-        <div class="input-group">
-          <label for="author-name">Nom de famille</label>
-          <input type="text" id="author-name" class="form-input" placeholder="QUINSON">
-        </div>
-        <div class="input-group">
-          <label for="author-field">Domaine</label>
-          <input type="text" id="author-field" class="form-input" placeholder="Computer Science">
-        </div>
-        <div class="input-group">
-          <label for="author-title">Titre</label>
-          <input type="text" id="author-title" class="form-input" placeholder="Director of the Computer Sciences teaching department">
-        </div>
-        <div class="input-group">
-          <label for="author-schoolyear">Année scolaire</label>
-          <input type="text" id="author-schoolyear" class="form-input" placeholder="2023-2024">
-        </div>
-        <div class="input-group">
-          <label for="author-yearname">Nom de l'année</label>
-          <input type="text" id="author-yearname" class="form-input" placeholder="First year of Master's degree in Computer Science">
-        </div>
-      </div>
-
-      <div class="demo-section">
-        <h3>Notes</h3>
-        <table class="grades-table" id="grades-table">
-          <thead>
-            <tr>
-              <th>Nom du cours</th>
-              <th>Note (/20)</th>
-              <th>Crédits ECTS</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="grades-tbody">
-            <tr>
-              <td><input type="text" class="form-input" placeholder="Programmation 1" value="Programmation 1"></td>
-              <td><input type="number" class="form-input" step="0.1" min="0" max="20" placeholder="16.5" value="16.5"></td>
-              <td><input type="number" class="form-input" step="1" min="0" placeholder="6" value="6"></td>
-              <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="button" class="add-grade-button" onclick="addGradeRow()">Ajouter une note</button>
       </div>
     </div>
 
@@ -600,6 +516,7 @@ const API_BASE_URL = 'https://ensgrading-production.up.railway.app';
 let uploadedFiles = {
   student: null,
   author: null,
+  year: null,
   grades: null,
   excel: null,
   'author-batch': null
@@ -609,26 +526,10 @@ let uploadedFiles = {
 // UI INTERACTION FUNCTIONS
 // =============================================================================
 
+// This function is no longer needed as we removed tabs, but keeping it in case other code references it
 function switchTab(tabName, clickedButton) {
-  // Hide all tab contents
-  const contents = document.querySelectorAll('.tab-content');
-  contents.forEach(content => content.classList.remove('active'));
-  
-  // Remove active class from all buttons
-  const buttons = document.querySelectorAll('.tab-button');
-  buttons.forEach(button => button.classList.remove('active'));
-  
-  // Show selected tab and activate button
-  document.getElementById(tabName).classList.add('active');
-  
-  // If no button reference passed, find it by the onclick attribute
-  if (!clickedButton) {
-    clickedButton = document.querySelector(`.tab-button[onclick*="'${tabName}'"]`);
-  }
-  
-  if (clickedButton) {
-    clickedButton.classList.add('active');
-  }
+  // No need for implementation since we only have one tab now
+  return;
 }
 
 function toggleUploadMode() {
@@ -677,71 +578,9 @@ function handleFileUpload(input, type) {
 // FORM AND DATA HANDLING FUNCTIONS
 // =============================================================================
 
-function addGradeRow() {
-  const tbody = document.getElementById('grades-tbody');
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td><input type="text" class="form-input" placeholder="Nom du cours"></td>
-    <td><input type="number" class="form-input" step="0.1" min="0" max="20" placeholder="Note"></td>
-    <td><input type="number" class="form-input" step="1" min="0" placeholder="ECTS"></td>
-    <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
-  `;
-  tbody.appendChild(row);
-}
+// These functions have been removed as we no longer have manual grade input
 
-function removeGradeRow(button) {
-  const row = button.closest('tr');
-  row.remove();
-}
-
-function loadExampleData() {
-  // Fill manual input fields with example data
-  document.getElementById('student-gender').value = 'Mr';
-  document.getElementById('student-firstname').value = 'Jean';
-  document.getElementById('student-name').value = 'DUPONT';
-  document.getElementById('student-pronoun').value = 'he';
-  document.getElementById('student-dob').value = '26th of August 2000';
-  document.getElementById('student-pob').value = 'Rennes (FRANCE)';
-  
-  document.getElementById('author-gender').value = 'Mr';
-  document.getElementById('author-firstname').value = 'Martin';
-  document.getElementById('author-name').value = 'QUINSON';
-  document.getElementById('author-field').value = 'Computer Science';
-  document.getElementById('author-title').value = 'Director of the Computer Sciences teaching department';
-  document.getElementById('author-schoolyear').value = '2023-2024';
-  document.getElementById('author-yearname').value = 'First year of Master\'s degree in Computer Science';
-  
-  // Clear existing grades and add example grades
-  const tbody = document.getElementById('grades-tbody');
-  tbody.innerHTML = `
-    <tr>
-      <td><input type="text" class="form-input" value="Programmation 1"></td>
-      <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="16.5"></td>
-      <td><input type="number" class="form-input" step="1" min="0" value="6"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
-    </tr>
-    <tr>
-      <td><input type="text" class="form-input" value="Algorithmes"></td>
-      <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="14.2"></td>
-      <td><input type="number" class="form-input" step="1" min="0" value="6"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
-    </tr>
-    <tr>
-      <td><input type="text" class="form-input" value="Mathématiques"></td>
-      <td><input type="number" class="form-input" step="0.1" min="0" max="20" value="12.8"></td>
-      <td><input type="number" class="form-input" step="1" min="0" value="3"></td>
-      <td><button type="button" class="remove-grade-button" onclick="removeGradeRow(this)">Supprimer</button></td>
-    </tr>
-  `;
-  
-  // Switch to manual tab if not already there
-  const manualTab = document.getElementById('manual');
-  if (!manualTab.classList.contains('active')) {
-    switchTab('manual');
-  }
-  
-  showStatus('Données d\'exemple chargées avec succès !', 'success');
-}
+// Function removed as we no longer have the manual input option
 
 // =============================================================================
 // UTILITY FUNCTIONS
@@ -761,23 +600,15 @@ function showStatus(message, type) {
 
 function generateTranscript() {
   try {
-    // Get data from current active tab
-    const activeTab = document.querySelector('.tab-content.active').id;
-
-    if (activeTab === 'upload') {
-      // Check upload mode
-      const uploadMode = document.querySelector('input[name="upload-mode"]:checked').value;
-      
-      if (uploadMode === 'single') {
-        handleSingleUploadGeneration();
-      } else {
-        handleBatchUploadGeneration();
-      }
-      return;
+    // Check upload mode
+    const uploadMode = document.querySelector('input[name="upload-mode"]:checked').value;
+    
+    if (uploadMode === 'single') {
+      handleSingleUploadGeneration();
     } else {
-      handleManualInputGeneration();
+      handleBatchUploadGeneration();
     }
-
+    return;
   } catch (error) {
     showStatus('Error generating transcript: ' + error.message, 'error');
   }
@@ -798,6 +629,7 @@ async function handleSingleUploadGeneration() {
     formData.append('student_info', uploadedFiles.student);
     formData.append('author_info', uploadedFiles.author);
     formData.append('grades', uploadedFiles.grades);
+    formData.append('year_info', uploadedFiles.year);
 
     // Call API
     const response = await fetch(`${API_BASE_URL}/api/single`, {
@@ -839,8 +671,14 @@ async function handleBatchUploadGeneration() {
     const formData = new FormData();
     formData.append('students_excel', uploadedFiles.excel);
     formData.append('author_info', uploadedFiles['author-batch']);
+    
+    // Check if rank display is enabled
+    const displayRank = document.querySelector('input[name="display-rank"]:checked').value === 'true';
+    if (displayRank) {
+      formData.append('display_rank', 'true');
+    }
 
-    // Call Vercel API
+    // Call API
     const response = await fetch(`${API_BASE_URL}/api/batch`, {
       method: 'POST',
       body: formData
@@ -861,97 +699,7 @@ async function handleBatchUploadGeneration() {
   }
 }
 
-async function handleManualInputGeneration() {
-  showStatus('Generating transcript from manual input...', 'info');
-  
-  try {
-    // Get data from manual input
-    const studentData = {
-      gender: document.getElementById('student-gender').value,
-      firstname: document.getElementById('student-firstname').value,
-      name: document.getElementById('student-name').value,
-      pronoun: document.getElementById('student-pronoun').value,
-      dob: document.getElementById('student-dob').value,
-      pob: document.getElementById('student-pob').value
-    };
-
-    const authorData = {
-      gender: document.getElementById('author-gender').value,
-      firstname: document.getElementById('author-firstname').value,
-      name: document.getElementById('author-name').value,
-      field: document.getElementById('author-field').value,
-      title: document.getElementById('author-title').value,
-      schoolyear: document.getElementById('author-schoolyear').value,
-      yearname: document.getElementById('author-yearname').value
-    };
-
-    // Get grades from table
-    const gradesData = {};
-    const rows = document.querySelectorAll('#grades-tbody tr');
-
-    for (let row of rows) {
-      const inputs = row.querySelectorAll('input');
-      const courseName = inputs[0].value.trim();
-      const grade = parseFloat(inputs[1].value);
-      const ects = parseInt(inputs[2].value);
-
-      if (courseName && !isNaN(grade) && !isNaN(ects)) {
-        gradesData[courseName] = [grade, ects];
-      }
-    }
-
-    // Validate required fields
-    if (!studentData.firstname || !studentData.name || Object.keys(gradesData).length === 0) {
-      showStatus('Please fill in all required fields.', 'error');
-      return;
-    }
-
-    // Create YAML and JSON content
-    const studentYaml = `student:
-  gender: ${studentData.gender}
-  name: ${studentData.name}
-  firstname: ${studentData.firstname}
-  pronoun: ${studentData.pronoun}
-  dob: ${studentData.dob}
-  pob: ${studentData.pob}`;
-
-    const authorYaml = `author:
-  gender: ${authorData.gender}
-  name: ${authorData.name}
-  firstname: ${authorData.firstname}
-  field: ${authorData.field}
-  title: ${authorData.title}
-  schoolyear: "${authorData.schoolyear}"
-  yearname: ${authorData.yearname}`;
-
-    const gradesJson = JSON.stringify(gradesData, null, 2);
-
-    // Create FormData object
-    const formData = new FormData();
-    formData.append('student_info', new Blob([studentYaml], { type: 'text/plain' }));
-    formData.append('author_info', new Blob([authorYaml], { type: 'text/plain' }));
-    formData.append('grades', new Blob([gradesJson], { type: 'application/json' }));
-
-    // Call Vercel API
-    const response = await fetch(`${API_BASE_URL}/api/single`, {
-      method: 'POST',
-      body: formData
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Failed to generate transcript');
-    }
-
-    // Handle successful response
-    downloadPDFFromBase64(result.pdf_data, result.filename);
-    showStatus(`Transcript generated successfully for ${result.student_name}!`, 'success');
-
-  } catch (error) {
-    showStatus('Error generating transcript: ' + error.message, 'error');
-  }
-}
+// This function has been removed as we no longer have manual input mode
 
 // =============================================================================
 // FILE DOWNLOAD FUNCTIONS
